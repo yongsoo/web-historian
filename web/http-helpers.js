@@ -10,6 +10,16 @@ exports.headers = headers = {
 };
 
 exports.serveStaticAssets = function(res, folder, asset) {
+  var fullPath = path.join(__dirname, "../web" + folder + asset);
+  console.log(fullPath);
+  fs.readFile(fullPath, function(err, data) {
+    if (err) {
+      console.log(err);
+    }
+    console.log('no error');
+    res.writeHead(200, headers);
+    res.end(data);
+  });
   //Write some code here that helps serve up your static files!
   //(Static files are things like html (yours or arhived from others...), css, or anything that doesn't change often.)
 };
