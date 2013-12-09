@@ -16,7 +16,6 @@ exports.serveStaticAssets = function(res, folder, asset) {
     if (err) {
       console.log(err);
     }
-    console.log('no error');
     res.writeHead(200, headers);
     res.end(data);
   });
