@@ -6,12 +6,14 @@ var helpers = require('./lib/html-fetcher-helpers');
 var datadir = path.join(__dirname, "../data/sites.txt");
 var urls;
 
+console.log("about to call readUrls with: " + datadir);
 helpers.readUrls(datadir, function(data) {
   urls = data;
 
   if (urls === undefined) {
     throw err;
   } else {
+    console.log("about to call downloadUrls with: " + urls);
     helpers.downloadUrls(urls);
   }
 });
