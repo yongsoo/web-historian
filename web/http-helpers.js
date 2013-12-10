@@ -23,4 +23,19 @@ exports.serveStaticAssets = function(res, folder, asset) {
   //(Static files are things like html (yours or arhived from others...), css, or anything that doesn't change often.)
 };
 
+exports.writeUrlToFile = function(res, file, data) {
+  console.log('writeURLToFile function triggered');
+  console.log(file);
+  data = data + "\n";
+  fs.writeFile(file, data, function(err) {
+    if (err) {
+      console.log(err);
+    }
+    res.writeHead(302, headers);
+    res.end();
+  });
+  //Write some code here that helps serve up your static files!
+  //(Static files are things like html (yours or arhived from others...), css, or anything that doesn't change often.)
+};
+
 // As you go through, keep thinking about what helper functions you can put here!

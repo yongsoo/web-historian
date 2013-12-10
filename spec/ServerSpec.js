@@ -6,6 +6,7 @@ var res;
 
 // allows us to run tests async
 function async(cb){
+  waits(100);
   runs(cb);
 }
 
@@ -18,7 +19,6 @@ describe("Node Server Request Listener Function", function() {
   it("Should answer GET requests for /", function(done) {
     var req = new stubs.Request("/", "GET");
     handler.handleRequest(req, res);
-    waits(1000);
     async(function(){
       expect(res._responseCode).toEqual(200);
       expect(res._data).toMatch(/<input/); // the resulting html should have an input tag
@@ -46,11 +46,13 @@ describe("Node Server Request Listener Function", function() {
     var req = new stubs.Request("/", "POST", {url: url});
 
     handler.handleRequest(req, res);
+    async(function() {
 
-    var fileContents = fs.readFileSync(handler.datadir, 'utf8');
-    expect(res._responseCode).toEqual(302);
-    expect(fileContents).toEqual(url + "\n");
-    expect(res._ended).toEqual(true);
+      var fileContents = fs.readFileSync(handler.datadir, 'utf8');
+      expect(res._responseCode).toEqual(302);
+      expect(fileContents).toEqual(url + "\n");
+      expect(res._ended).toEqual(true);
+    });
   });
 
   it("Should 404 when asked for a nonexistent file", function(done) {
