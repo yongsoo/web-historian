@@ -44,8 +44,13 @@ exports.readUrlToFile = function(res, url, data) {
     var file = data + "";
     var re = new RegExp(url);
 
-    res.writeHead(200, headers);
-    res.end(file.match(re)[0]);
+    if (file.match(re) === null) {
+      res.writeHead(404, headers);
+      res.end();
+    } else {
+      res.writeHead(200, headers);
+      res.end(file.match(re)[0]);
+    }
   });
 };
 
