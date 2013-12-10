@@ -11,10 +11,13 @@ module.exports.handleRequest = function (req, res) {
   if (req.method === "GET" && actualUrl === "/") {
     var fileURL = "./public/index.html";
     httpHelpers.serveStaticAssets(res, req.url, fileURL);
-  } else if (req.method === "GET" && /www/.test(actualUrl)) {
-    console.log('about to call readUrlToFile');
+  }
+
+  else if (req.method === "GET" && /www/.test(actualUrl)) {
     httpHelpers.readUrlToFile(res, actualUrl.slice(1), module.exports.datadir);
-  } else if (req.method === 'POST' && req.url === "/") {
+  }
+
+  else if (req.method === 'POST' && req.url === "/") {
     req.on('data', function(chunk) {
       postData += chunk;
     });
@@ -27,7 +30,9 @@ module.exports.handleRequest = function (req, res) {
         res.end("500: Please put in a real address starting with www.");
       }
     });
-  } else {
+  }
+
+  else {
     if (req.method === "GET" && actualUrl === "/success.html") {
       res.writeHead(200, headers);
       res.end();
