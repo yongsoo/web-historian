@@ -11,7 +11,6 @@ exports.headers = headers = {
 
 exports.serveStaticAssets = function(res, folder, asset) {
   var fullPath = path.join(__dirname, "../web" + folder + asset);
-  console.log(fullPath);
   fs.readFile(fullPath, function(err, data) {
     if (err) {
       console.log(err);
@@ -24,10 +23,8 @@ exports.serveStaticAssets = function(res, folder, asset) {
 };
 
 exports.writeUrlToFile = function(res, file, data) {
-  console.log('writeURLToFile function triggered');
-  console.log(file);
   data = data + "\n";
-  fs.writeFile(file, data, function(err) {
+  fs.appendFile(file, data, function(err) {
     if (err) {
       console.log(err);
     }
@@ -36,6 +33,20 @@ exports.writeUrlToFile = function(res, file, data) {
   });
   //Write some code here that helps serve up your static files!
   //(Static files are things like html (yours or arhived from others...), css, or anything that doesn't change often.)
+};
+
+exports.readUrlToFile = function(res, url, data) {
+  fs.readFile(data, { encoding: 'utf-8' }, function(err, data) {
+    if (err) {
+      console.log(err);
+    }
+
+    var file = data + "";
+    var re = new RegExp(url);
+
+    res.writeHead(200, headers);
+    res.end(file.match(re)[0]);
+  });
 };
 
 // As you go through, keep thinking about what helper functions you can put here!
