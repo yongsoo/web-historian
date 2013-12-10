@@ -16,7 +16,7 @@ beforeEach(function(){
 
 describe("Node Server Request Listener Function", function() {
 
-  it("Should answer GET requests for /", function(done) {
+  xit("Should answer GET requests for /", function(done) {
     var req = new stubs.Request("/", "GET");
     handler.handleRequest(req, res);
     async(function(){
@@ -27,7 +27,7 @@ describe("Node Server Request Listener Function", function() {
     });
   });
 
-  it("Should answer GET requests for archived websites", function(done) {
+  xit("Should answer GET requests for archived websites", function(done) {
     var fixtureName = "www.example.com";
     var req = new stubs.Request("/" + fixtureName, "GET");
     handler.handleRequest(req, res);
@@ -39,7 +39,7 @@ describe("Node Server Request Listener Function", function() {
     });
   });
 
-  it("Should accept posts to /", function() {
+  xit("Should accept posts to /", function() {
     fs.writeFileSync(handler.datadir, ""); // reset the test file
 
     var url = "www.example.com";
@@ -55,7 +55,7 @@ describe("Node Server Request Listener Function", function() {
     });
   });
 
-  it("Should 404 when asked for a nonexistent file", function(done) {
+  xit("Should 404 when asked for a nonexistent file", function(done) {
     var req = new stubs.Request("/arglebargle", "GET");
     handler.handleRequest(req, res);
     async(function() {

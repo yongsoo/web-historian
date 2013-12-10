@@ -28,6 +28,8 @@ exports.writeUrlToFile = function(res, file, data) {
     if (err) {
       console.log(err);
     }
+
+  headers.location = "http://127.0.0.1:8080/success.html";
     res.writeHead(302, headers);
     res.end();
   });
