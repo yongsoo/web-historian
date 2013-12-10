@@ -13,13 +13,13 @@ exports.readUrls = function(filePath, cb){
   });
 };
 
-
-
 exports.downloadUrls = function(urls){
   urls.pop();
   urls.forEach(function(url) {
-    httpRequest.get({ url: url }, "../data/sites/" + url, function(err, result) {
-      console.log('httprequest get ran with' + result);
+    httpRequest.get({ url: url }, "../data/sites/" + url, function(err) {
+      if (err) {
+        throw err;
+      }
     });
   });
 };

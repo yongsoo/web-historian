@@ -38,7 +38,7 @@ exports.writeUrlToFile = function(res, file, data) {
 };
 
 exports.readUrlToFile = function(res, url, data) {
-  fs.readFile(data, { encoding: 'utf-8' }, function(err, data) {
+  fs.readFile(data, function(err, data) {
     if (err) {
       console.log(err);
     }
@@ -48,11 +48,23 @@ exports.readUrlToFile = function(res, url, data) {
 
     if (file.match(re) === null) {
       res.writeHead(404, headers);
-      res.end();
+      res.end("404: No resource here");
     } else {
-      res.writeHead(200, headers);
-      res.end(file.match(re)[0]);
+      getWebPage(url, function(data) {
+        res.writeHead(200, headers);
+        res.end(data);
+      });
     }
+  });
+};
+
+var getWebPage = function(url, cb) {
+  var archivePath = path.join(__dirname, "../data/sites/" + url);
+  fs.readFile(archivePath, function(err, data) {
+    if (err) {
+      throw err;
+    }
+    cb(data);
   });
 };
 

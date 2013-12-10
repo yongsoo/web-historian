@@ -11,7 +11,7 @@ helpers.readUrls(datadir, function(data) {
 
   if (urls === undefined) {
     throw err;
-  } else {  
+  } else {
     helpers.downloadUrls(urls);
   }
 });
