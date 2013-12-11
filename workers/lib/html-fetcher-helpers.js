@@ -1,6 +1,8 @@
 var fs = require('fs');
 var httpRequest = require('http-request');
 var path = require('path');
+var mysql = require('mysql');
+var connection = mysql.createConnection({ host: 'localhost', database: 'websites', user: 'root' });
 
 exports.readUrls = function(filePath, cb){
 
@@ -22,5 +24,15 @@ exports.downloadUrls = function(urls){
         throw err;
       }
     });
+  });
+};
+
+exports.readUrlsFromDb = function(cb) {
+  connection.connect();
+  connection.query('SELECT path from urls', function(err, rows) {
+    if (err) { throw err; }
+    console.log(rows);
+    cb(rows);
+    connection.end();
   });
 };
