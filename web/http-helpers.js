@@ -1,5 +1,7 @@
 var path = require('path');
 var fs = require('fs');
+var mysql = require('mysql');
+var connection = mysql.createConnection({ host: 'localhost', database: 'websites', user: 'root' });
 
 exports.headers = headers = {
   "access-control-allow-origin": "*",
@@ -7,6 +9,30 @@ exports.headers = headers = {
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10, // Seconds.
   'Content-Type': "text/html"
+};
+
+var writeToDb = function(url, path) {
+  connection.connect();
+  connection.query('INSERT INTO urls SET ?', {url: url, path: path, timestamp: new Date()}, function(err, result) {
+    if (err) throw err;
+  });
+
+  connection.query('SELECT * from urls', function(err, rows) {
+    if (err) throw err;
+    console.log(rows);
+  });
+
+  connection.end();
+};
+
+var getWebPage = function(url, cb) {
+  var archivePath = path.join(__dirname, "../data/sites/" + url);
+  fs.readFile(archivePath, function(err, data) {
+    if (err) {
+      throw err;
+    }
+    cb(data);
+  });
 };
 
 exports.serveStaticAssets = function(res, folder, asset) {
@@ -22,9 +48,11 @@ exports.serveStaticAssets = function(res, folder, asset) {
   //(Static files are things like html (yours or arhived from others...), css, or anything that doesn't change often.)
 };
 
-exports.writeUrlToFile = function(res, file, data) {
-  data = data + "\n";
-  fs.appendFile(file, data, function(err) {
+exports.writeUrlToFile = function(res, file, url) {
+  var fullPath = path.join(__dirname, "../data/sites/" + url);
+  writeToDb(url, fullPath);
+  url = url + "\n";
+  fs.appendFile(file, url, function(err) {
     if (err) {
       console.log(err);
     }
@@ -37,7 +65,7 @@ exports.writeUrlToFile = function(res, file, data) {
   //(Static files are things like html (yours or arhived from others...), css, or anything that doesn't change often.)
 };
 
-exports.readUrlToFile = function(res, url, data) {
+exports.readUrlFromFile = function(res, url, data) {
   fs.readFile(data, function(err, data) {
     if (err) {
       console.log(err);
@@ -58,14 +86,11 @@ exports.readUrlToFile = function(res, url, data) {
   });
 };
 
-var getWebPage = function(url, cb) {
-  var archivePath = path.join(__dirname, "../data/sites/" + url);
-  fs.readFile(archivePath, function(err, data) {
-    if (err) {
-      throw err;
-    }
-    cb(data);
-  });
-};
+
+
+
+
+
+
 
 // As you go through, keep thinking about what helper functions you can put here!

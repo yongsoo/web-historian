@@ -14,7 +14,7 @@ module.exports.handleRequest = function (req, res) {
   }
 
   else if (req.method === "GET" && /www/.test(actualUrl)) {
-    httpHelpers.readUrlToFile(res, actualUrl.slice(1), module.exports.datadir);
+    httpHelpers.readUrlFromFile(res, actualUrl.slice(1), module.exports.datadir);
   }
 
   else if (req.method === 'POST' && req.url === "/") {
